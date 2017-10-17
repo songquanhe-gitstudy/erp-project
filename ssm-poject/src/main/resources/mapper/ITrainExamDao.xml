@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.ITrainExamDao">
+  <resultMap id="BaseResultMap" type="com.song.model.TrainExamEntity">
+    <id column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="train_id" jdbcType="INTEGER" property="trainId" />
+    <result column="exam_title" jdbcType="VARCHAR" property="examTitle" />
+    <result column="A_option" jdbcType="VARCHAR" property="aOption" />
+    <result column="B_option" jdbcType="VARCHAR" property="bOption" />
+    <result column="C_option" jdbcType="VARCHAR" property="cOption" />
+    <result column="D_option" jdbcType="VARCHAR" property="dOption" />
+    <result column="true_option" jdbcType="VARCHAR" property="trueOption" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    exam_id, train_id, exam_title, A_option, B_option, C_option, D_option, true_option
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train_exam
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findExamNoTrainId" resultMap="BaseResultMap">
+     select 
+    *
+    from t_train_exam
+	where  train_id = 0
+    ORDER BY RAND() limit 5
+  </select>
+  
+  <select id="findExamByTrainId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train_exam
+    where train_id = #{param1,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_train_exam
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.TrainExamEntity">
+    insert into t_train_exam (exam_id, train_id, exam_title, 
+      A_option, B_option, C_option, 
+      D_option, true_option)
+    values (#{examId,jdbcType=INTEGER}, #{trainId,jdbcType=INTEGER}, #{examTitle,jdbcType=VARCHAR}, 
+      #{aOption,jdbcType=VARCHAR}, #{bOption,jdbcType=VARCHAR}, #{cOption,jdbcType=VARCHAR}, 
+      #{dOption,jdbcType=VARCHAR}, #{trueOption,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.TrainExamEntity">
+    insert into t_train_exam
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="examId != null">
+        exam_id,
+      </if>
+      <if test="trainId != null">
+        train_id,
+      </if>
+      <if test="examTitle != null">
+        exam_title,
+      </if>
+      <if test="aOption != null">
+        A_option,
+      </if>
+      <if test="bOption != null">
+        B_option,
+      </if>
+      <if test="cOption != null">
+        C_option,
+      </if>
+      <if test="dOption != null">
+        D_option,
+      </if>
+      <if test="trueOption != null">
+        true_option,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="examId != null">
+        #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="trainId != null">
+        #{trainId,jdbcType=INTEGER},
+      </if>
+      <if test="examTitle != null">
+        #{examTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="aOption != null">
+        #{aOption,jdbcType=VARCHAR},
+      </if>
+      <if test="bOption != null">
+        #{bOption,jdbcType=VARCHAR},
+      </if>
+      <if test="cOption != null">
+        #{cOption,jdbcType=VARCHAR},
+      </if>
+      <if test="dOption != null">
+        #{dOption,jdbcType=VARCHAR},
+      </if>
+      <if test="trueOption != null">
+        #{trueOption,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.TrainExamEntity">
+    update t_train_exam
+    <set>
+      <if test="trainId != null">
+        train_id = #{trainId,jdbcType=INTEGER},
+      </if>
+      <if test="examTitle != null">
+        exam_title = #{examTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="aOption != null">
+        A_option = #{aOption,jdbcType=VARCHAR},
+      </if>
+      <if test="bOption != null">
+        B_option = #{bOption,jdbcType=VARCHAR},
+      </if>
+      <if test="cOption != null">
+        C_option = #{cOption,jdbcType=VARCHAR},
+      </if>
+      <if test="dOption != null">
+        D_option = #{dOption,jdbcType=VARCHAR},
+      </if>
+      <if test="trueOption != null">
+        true_option = #{trueOption,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.TrainExamEntity">
+    update t_train_exam
+    set train_id = #{trainId,jdbcType=INTEGER},
+      exam_title = #{examTitle,jdbcType=VARCHAR},
+      A_option = #{aOption,jdbcType=VARCHAR},
+      B_option = #{bOption,jdbcType=VARCHAR},
+      C_option = #{cOption,jdbcType=VARCHAR},
+      D_option = #{dOption,jdbcType=VARCHAR},
+      true_option = #{trueOption,jdbcType=VARCHAR}
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </update>
+</mapper>

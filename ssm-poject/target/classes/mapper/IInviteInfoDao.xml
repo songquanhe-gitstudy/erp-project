@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.IInviteInfoDao">
+  <resultMap id="BaseResultMap" type="com.song.model.InviteInfoEntity">
+    <id column="invite_id" jdbcType="INTEGER" property="inviteId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="requires" jdbcType="VARCHAR" property="requires" />
+    <result column="job_position" jdbcType="VARCHAR" property="jobPosition" />
+    <result column="welfare" jdbcType="VARCHAR" property="welfare" />
+    <result column="salary" jdbcType="VARCHAR" property="salary" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    invite_id, name, address, requires, job_position, welfare, salary
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_invite_info
+    where invite_id = #{inviteId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+    select 
+    *
+    from t_invite_info
+  </select>
+  
+  <select id="findListByName" resultMap="BaseResultMap">
+    select 
+    *
+    from t_invite_info
+    where name like concat("%",#{name},"%")
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_invite_info
+    where invite_id = #{inviteId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.InviteInfoEntity">
+    insert into t_invite_info (invite_id, name, address, 
+      requires, job_position, welfare, 
+      salary)
+    values (#{inviteId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{requires,jdbcType=VARCHAR}, #{jobPosition,jdbcType=VARCHAR}, #{welfare,jdbcType=VARCHAR}, 
+      #{salary,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.InviteInfoEntity">
+    insert into t_invite_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="inviteId != null">
+        invite_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="requires != null">
+        requires,
+      </if>
+      <if test="jobPosition != null">
+        job_position,
+      </if>
+      <if test="welfare != null">
+        welfare,
+      </if>
+      <if test="salary != null">
+        salary,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="inviteId != null">
+        #{inviteId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="requires != null">
+        #{requires,jdbcType=VARCHAR},
+      </if>
+      <if test="jobPosition != null">
+        #{jobPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="welfare != null">
+        #{welfare,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        #{salary,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.InviteInfoEntity">
+    update t_invite_info
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="requires != null">
+        requires = #{requires,jdbcType=VARCHAR},
+      </if>
+      <if test="jobPosition != null">
+        job_position = #{jobPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="welfare != null">
+        welfare = #{welfare,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        salary = #{salary,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where invite_id = #{inviteId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.InviteInfoEntity">
+    update t_invite_info
+    set name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      requires = #{requires,jdbcType=VARCHAR},
+      job_position = #{jobPosition,jdbcType=VARCHAR},
+      welfare = #{welfare,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=VARCHAR}
+    where invite_id = #{inviteId,jdbcType=INTEGER}
+  </update>
+</mapper>

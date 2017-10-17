@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.IWageDao">
+  <resultMap id="BaseResultMap" type="com.song.model.WageEntity">
+    <id column="wage_id" jdbcType="INTEGER" property="wageId" />
+    <result column="emp_id" jdbcType="INTEGER" property="empId" />
+    <result column="years" jdbcType="VARCHAR" property="years" />
+    <result column="months" jdbcType="VARCHAR" property="months" />
+    <result column="total_wage" jdbcType="DECIMAL" property="totalWage" />
+    <result column="base_wage" jdbcType="DECIMAL" property="baseWage" />
+    <result column="perf_wage" jdbcType="DECIMAL" property="perfWage" />
+    <result column="ov_wage" jdbcType="DECIMAL" property="ovWage" />
+    <result column="rap_wage" jdbcType="DECIMAL" property="rapWage" />
+    <result column="jinpo_wage" jdbcType="DECIMAL" property="jinpoWage" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="descript" jdbcType="VARCHAR" property="descript" />
+    <result column="admin_descript" jdbcType="VARCHAR" property="adminDescript" />
+  </resultMap>
+  <resultMap type="com.song.model.WageEntity" id="BaseResultMapWithUser" extends="BaseResultMap">
+  		<association property="user" javaType="com.song.model.userEntity">
+  			<id column="user_id" jdbcType="INTEGER" property="userId" />
+		    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+		    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		    <result column="resume_id" jdbcType="INTEGER" property="resumeId" />
+		    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+		    <result column="age" jdbcType="VARCHAR" property="age" />
+		    <result column="password" jdbcType="VARCHAR" property="password" />
+		    <result column="state" jdbcType="VARCHAR" property="state" />
+		    <result column="gender" jdbcType="VARCHAR" property="gender" />
+		    <result column="email" jdbcType="VARCHAR" property="email" />
+		    <result column="birth_day" jdbcType="DATE" property="birthDay" />
+		    <result column="education" jdbcType="VARCHAR" property="education" />
+		    <result column="phone_number" jdbcType="INTEGER" property="phoneNumber" />
+		    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		    <result column="reason" jdbcType="VARCHAR" property="reason" />
+		    <result column="salary" property="salary" />
+  		</association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    wage_id, emp_id, years, months, total_wage, base_wage, perf_wage, ov_wage, rap_wage, 
+    jinpo_wage, state, descript, admin_descript
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_wage
+    where wage_id = #{wageId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findWageByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_wage
+    where emp_id = #{param1,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getReConsiderWage" resultMap="BaseResultMapWithUser">
+    select 
+    *
+    from t_wage w, t_user u
+    where w.emp_id = u.user_id
+    and w.state in (1, 2)
+    order by wage_id desc
+  </select>
+  
+  <select id="checkRecords" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from t_wage
+    where years = #{param1}
+    and months = ${param2}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_wage
+    where wage_id = #{wageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.WageEntity">
+    insert into t_wage (wage_id, emp_id, years, 
+      months, total_wage, base_wage, 
+      perf_wage, ov_wage, rap_wage, 
+      jinpo_wage, state, descript, 
+      admin_descript)
+    values (#{wageId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER}, #{years,jdbcType=VARCHAR}, 
+      #{months,jdbcType=VARCHAR}, #{totalWage,jdbcType=DECIMAL}, #{baseWage,jdbcType=DECIMAL}, 
+      #{perfWage,jdbcType=DECIMAL}, #{ovWage,jdbcType=DECIMAL}, #{rapWage,jdbcType=DECIMAL}, 
+      #{jinpoWage,jdbcType=DECIMAL}, #{state,jdbcType=INTEGER}, #{descript,jdbcType=VARCHAR}, 
+      #{adminDescript,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.WageEntity">
+    insert into t_wage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wageId != null">
+        wage_id,
+      </if>
+      <if test="empId != null">
+        emp_id,
+      </if>
+      <if test="years != null">
+        years,
+      </if>
+      <if test="months != null">
+        months,
+      </if>
+      <if test="totalWage != null">
+        total_wage,
+      </if>
+      <if test="baseWage != null">
+        base_wage,
+      </if>
+      <if test="perfWage != null">
+        perf_wage,
+      </if>
+      <if test="ovWage != null">
+        ov_wage,
+      </if>
+      <if test="rapWage != null">
+        rap_wage,
+      </if>
+      <if test="jinpoWage != null">
+        jinpo_wage,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="descript != null">
+        descript,
+      </if>
+      <if test="adminDescript != null">
+        admin_descript,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wageId != null">
+        #{wageId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null">
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        #{months,jdbcType=VARCHAR},
+      </if>
+      <if test="totalWage != null">
+        #{totalWage,jdbcType=DECIMAL},
+      </if>
+      <if test="baseWage != null">
+        #{baseWage,jdbcType=DECIMAL},
+      </if>
+      <if test="perfWage != null">
+        #{perfWage,jdbcType=DECIMAL},
+      </if>
+      <if test="ovWage != null">
+        #{ovWage,jdbcType=DECIMAL},
+      </if>
+      <if test="rapWage != null">
+        #{rapWage,jdbcType=DECIMAL},
+      </if>
+      <if test="jinpoWage != null">
+        #{jinpoWage,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="descript != null">
+        #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="adminDescript != null">
+        #{adminDescript,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.WageEntity">
+    update t_wage
+    <set>
+      <if test="empId != null">
+        emp_id = #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        years = #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        months = #{months,jdbcType=VARCHAR},
+      </if>
+      <if test="totalWage != null">
+        total_wage = #{totalWage,jdbcType=DECIMAL},
+      </if>
+      <if test="baseWage != null">
+        base_wage = #{baseWage,jdbcType=DECIMAL},
+      </if>
+      <if test="perfWage != null">
+        perf_wage = #{perfWage,jdbcType=DECIMAL},
+      </if>
+      <if test="ovWage != null">
+        ov_wage = #{ovWage,jdbcType=DECIMAL},
+      </if>
+      <if test="rapWage != null">
+        rap_wage = #{rapWage,jdbcType=DECIMAL},
+      </if>
+      <if test="jinpoWage != null">
+        jinpo_wage = #{jinpoWage,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="descript != null">
+        descript = #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="adminDescript != null">
+        admin_descript = #{adminDescript,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where wage_id = #{wageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.WageEntity">
+    update t_wage
+    set emp_id = #{empId,jdbcType=INTEGER},
+      years = #{years,jdbcType=VARCHAR},
+      months = #{months,jdbcType=VARCHAR},
+      total_wage = #{totalWage,jdbcType=DECIMAL},
+      base_wage = #{baseWage,jdbcType=DECIMAL},
+      perf_wage = #{perfWage,jdbcType=DECIMAL},
+      ov_wage = #{ovWage,jdbcType=DECIMAL},
+      rap_wage = #{rapWage,jdbcType=DECIMAL},
+      jinpo_wage = #{jinpoWage,jdbcType=DECIMAL},
+      state = #{state,jdbcType=INTEGER},
+      descript = #{descript,jdbcType=VARCHAR},
+      admin_descript = #{adminDescript,jdbcType=VARCHAR}
+    where wage_id = #{wageId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.INewMessageDao">
+  <resultMap id="BaseResultMap" type="com.song.model.NewMessageEntity">
+    <id column="message_id" jdbcType="INTEGER" property="messageId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="assign_id" jdbcType="INTEGER" property="assignId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="sender" jdbcType="VARCHAR" property="sender" />
+    <result column="appointedtime" jdbcType="TIMESTAMP" property="appointedtime" />
+    <result column="message_state" jdbcType="INTEGER" property="messageState" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    message_id, user_id, assign_id, type, content,sender,appointedtime, message_state, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_new_message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findInterViewByUId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_new_message
+    where user_id = #{param1}
+    and type = 1
+    and message_state = 1
+    order by message_id desc
+  </select>
+  
+  <select id="findAllInterViewByUId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_new_message
+    where user_id = #{param1}
+    and type = 1
+    order by message_id desc
+  </select>
+  
+  <select id="findAppointByUId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_new_message
+    where user_id = #{param1}
+    and type = 2
+    and message_state = 1
+    order by message_id desc
+  </select>
+  
+  <select id="findAllAppointByUId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_new_message
+    where user_id = #{param1}
+    and type = 2
+    order by message_id desc
+  </select>
+  
+  <select id="findTrainByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_new_message
+    where user_id = #{param1}
+    and type = 3
+    and message_state = 1
+    order by message_id desc
+  </select>
+  
+  <select id="findAllMessageByUId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_new_message
+    where user_id = #{param1}
+    order by message_id desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_new_message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.NewMessageEntity">
+    insert into t_new_message (message_id, user_id, assign_id, 
+      type, content,sender,appointedtime, message_state, 
+      create_time)
+    values (#{messageId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{assignId,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR},#{sender},#{appointedtime}, #{messageState,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.NewMessageEntity">
+    insert into t_new_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        message_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="assignId != null">
+        assign_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+       <if test="sender != null">
+        sender,
+      </if>
+      <if test="appointedtime != null">
+        appointedtime,
+      </if>
+      <if test="messageState != null">
+        message_state,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="assignId != null">
+        #{assignId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+       <if test="sender != null">
+        #{sender,jdbcType=VARCHAR},
+      </if>
+       <if test="appointedtime != null">
+        #{appointedtime},
+      </if>
+      <if test="messageState != null">
+        #{messageState,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.NewMessageEntity">
+    update t_new_message
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="assignId != null">
+        assign_id = #{assignId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sender != null">
+        sender = #{sender,jdbcType=VARCHAR},
+      </if>
+      <if test="appointedtime != null">
+        appointedtime = #{appointedtime},
+      </if>
+      <if test="messageState != null">
+        message_state = #{messageState,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.NewMessageEntity">
+    update t_new_message
+    set user_id = #{userId,jdbcType=INTEGER},
+      assign_id = #{assignId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      sender = #{sender},
+      appointedtime = #{appointedtime},
+      message_state = #{messageState,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+</mapper>

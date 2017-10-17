@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.IAttendanceSheetDao">
+  <resultMap id="BaseResultMap" type="com.song.model.AttendanceSheetEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="years" jdbcType="VARCHAR" property="years" />
+    <result column="months" jdbcType="VARCHAR" property="months" />
+    <result column="days" jdbcType="VARCHAR" property="days" />
+    <result column="on_work_time" jdbcType="TIMESTAMP" property="onWorkTime" />
+    <result column="out_work_time" jdbcType="TIMESTAMP" property="outWorkTime" />
+    <result column="descript" jdbcType="VARCHAR" property="descript" />
+    <result column="if_late" jdbcType="INTEGER" property="ifLate" />
+    <result column="if_kg" jdbcType="INTEGER" property="ifKg" />
+    <result column="if_jb" jdbcType="INTEGER" property="ifJb" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, years, months,days, on_work_time, out_work_time, descript, if_late, if_kg, 
+    if_jb
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_attendance_sheet
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByDate" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_attendance_sheet
+    where years = #{year}
+    and months = #{month}
+    and days = #{day}
+    and user_id = #{userId}
+  </select>
+  
+  <select id="findByUid" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_attendance_sheet
+    where user_id = #{param1}
+     order by id desc
+  </select>
+  
+  <select id="findByYearAndMonth" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_attendance_sheet
+    where user_id = #{userId}
+    and years = #{years}
+    and months = #{months}
+  </select>
+
+  <select id="findByYearAndMonthAndDay" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_attendance_sheet
+    where user_id = #{userId}
+    and years = #{years}
+    and months = #{months}
+    and days = #{days}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_attendance_sheet
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.AttendanceSheetEntity">
+    insert into t_attendance_sheet (id, user_id, years, 
+      months,days, on_work_time, out_work_time, 
+      descript, if_late, if_kg, 
+      if_jb)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{years,jdbcType=VARCHAR}, 
+      #{months,jdbcType=VARCHAR},#{days}, #{onWorkTime,jdbcType=TIMESTAMP}, #{outWorkTime,jdbcType=TIMESTAMP}, 
+      #{descript,jdbcType=VARCHAR}, #{ifLate,jdbcType=INTEGER}, #{ifKg,jdbcType=INTEGER}, 
+      #{ifJb,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.AttendanceSheetEntity">
+    insert into t_attendance_sheet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="years != null">
+        years,
+      </if>
+      <if test="months != null">
+        months,
+      </if>
+      <if test="days != null">
+      	days,
+      </if>
+      <if test="onWorkTime != null">
+        on_work_time,
+      </if>
+      <if test="outWorkTime != null">
+        out_work_time,
+      </if>
+      <if test="descript != null">
+        descript,
+      </if>
+      <if test="ifLate != null">
+        if_late,
+      </if>
+      <if test="ifKg != null">
+        if_kg,
+      </if>
+      <if test="ifJb != null">
+        if_jb,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        #{months,jdbcType=VARCHAR},
+      </if>
+      <if test="days != null">
+      	#{days},
+      </if>
+      <if test="onWorkTime != null">
+        #{onWorkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outWorkTime != null">
+        #{outWorkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="descript != null">
+        #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="ifLate != null">
+        #{ifLate,jdbcType=INTEGER},
+      </if>
+      <if test="ifKg != null">
+        #{ifKg,jdbcType=INTEGER},
+      </if>
+      <if test="ifJb != null">
+        #{ifJb,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.AttendanceSheetEntity">
+    update t_attendance_sheet
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        years = #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        months = #{months,jdbcType=VARCHAR},
+      </if>
+      <if test="days != null">
+        days = #{days,jdbcType=VARCHAR},
+      </if>
+      <if test="onWorkTime != null">
+        on_work_time = #{onWorkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outWorkTime != null">
+        out_work_time = #{outWorkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="descript != null">
+        descript = #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="ifLate != null">
+        if_late = #{ifLate,jdbcType=INTEGER},
+      </if>
+      <if test="ifKg != null">
+        if_kg = #{ifKg,jdbcType=INTEGER},
+      </if>
+      <if test="ifJb != null">
+        if_jb = #{ifJb,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.AttendanceSheetEntity">
+    update t_attendance_sheet
+    set user_id = #{userId,jdbcType=INTEGER},
+      years = #{years,jdbcType=VARCHAR},
+      months = #{months,jdbcType=VARCHAR},
+      days = #{days},
+      on_work_time = #{onWorkTime,jdbcType=TIMESTAMP},
+      out_work_time = #{outWorkTime,jdbcType=TIMESTAMP},
+      descript = #{descript,jdbcType=VARCHAR},
+      if_late = #{ifLate,jdbcType=INTEGER},
+      if_kg = #{ifKg,jdbcType=INTEGER},
+      if_jb = #{ifJb,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

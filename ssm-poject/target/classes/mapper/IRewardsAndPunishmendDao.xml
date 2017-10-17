@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.IRewardsAndPunishmendDao">
+  <resultMap id="BaseResultMap" type="com.song.model.RewardsAndPunishmendEntity">
+    <id column="rap_id" jdbcType="INTEGER" property="rapId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="years" jdbcType="VARCHAR" property="years" />
+    <result column="months" jdbcType="VARCHAR" property="months" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <resultMap type="com.song.model.RewardsAndPunishmendEntity" id="BaseResultMapWithUser" extends="BaseResultMap">
+  		<association property="user" javaType="com.song.model.userEntity">
+  			<id column="user_id" jdbcType="INTEGER" property="userId" />
+		    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+		    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		    <result column="resume_id" jdbcType="INTEGER" property="resumeId" />
+		    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+		    <result column="age" jdbcType="VARCHAR" property="age" />
+		    <result column="password" jdbcType="VARCHAR" property="password" />
+		    <result column="state" jdbcType="VARCHAR" property="state" />
+		    <result column="gender" jdbcType="VARCHAR" property="gender" />
+		    <result column="email" jdbcType="VARCHAR" property="email" />
+		    <result column="birth_day" jdbcType="DATE" property="birthDay" />
+		    <result column="education" jdbcType="VARCHAR" property="education" />
+		    <result column="phone_number" jdbcType="INTEGER" property="phoneNumber" />
+		    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		    <result column="reason" jdbcType="VARCHAR" property="reason" />
+		    <result column="salary" property="salary" />
+  		</association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    rap_id, user_id, years, months, money, create_time, reason, type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_reards_and_punishment
+    where rap_id = #{rapId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findAllRecords" resultMap="BaseResultMapWithUser">
+    select 
+    *
+    from t_reards_and_punishment r, t_user u
+    where r.user_id = u.user_id
+    order by rap_id desc
+  </select>
+  
+  <select id="findUserRecords" resultMap="BaseResultMap">
+    select 
+    *
+    from t_reards_and_punishment
+    where user_id = #{param1}
+    order by rap_id desc
+  </select>
+  
+  <select id="findByYearAndMonth" resultMap="BaseResultMap">
+    select 
+    *
+    from t_reards_and_punishment
+    where user_id = #{userId}
+    and years = #{years}
+    and months = #{months}
+    order by rap_id desc
+  </select>
+  
+  <select id="findByYearAndMonthNoUser" resultMap="BaseResultMapWithUser">
+  	select 
+    *
+    from t_reards_and_punishment r, t_user u
+    where r.user_id = u.user_id
+    and years = #{years}
+    and months = #{months}
+    order by rap_id desc
+    
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_reards_and_punishment
+    where rap_id = #{rapId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.RewardsAndPunishmendEntity">
+    insert into t_reards_and_punishment (rap_id, user_id, years, 
+      months, money, create_time, 
+      reason, type)
+    values (#{rapId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{years,jdbcType=VARCHAR}, 
+      #{months,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{reason,jdbcType=VARCHAR}, #{type})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.RewardsAndPunishmendEntity">
+    insert into t_reards_and_punishment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rapId != null">
+        rap_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="years != null">
+        years,
+      </if>
+      <if test="months != null">
+        months,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rapId != null">
+        #{rapId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        #{months,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.RewardsAndPunishmendEntity">
+    update t_reards_and_punishment
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        years = #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="months != null">
+        months = #{months,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rap_id = #{rapId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.RewardsAndPunishmendEntity">
+    update t_reards_and_punishment
+    set user_id = #{userId,jdbcType=INTEGER},
+      years = #{years,jdbcType=VARCHAR},
+      months = #{months,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      reason = #{reason,jdbcType=VARCHAR},
+      type = #{type}
+    where rap_id = #{rapId,jdbcType=INTEGER}
+  </update>
+</mapper>

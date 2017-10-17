@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jms 
+        http://www.springframework.org/schema/jms/spring-jms.xsd
+        ">
+
+	<!-- 加载邮件配置文件 -->
+	<!-- <context:property-placeholder location="classpath:*.properties" /> -->
+
+	<!-- 创建邮件发送器 -->
+	<bean id="sendMail" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	    <property name="defaultEncoding" value="utf-8"></property>
+	    <property name="host" value="smtp.163.com"></property>
+	    <property name="username" value="songgegewy"></property>
+	    <property name="password" value="sqh1994922"></property>
+	    <property name="javaMailProperties">
+	       <props>
+	         <prop key="mail.smtp.auth">true</prop>
+	       </props>
+	    </property>
+	</bean>
+	<!-- 配置邮件发送类 -->
+	<bean id="mail" class="com.song.mail.InviterViewMail" >
+	   <property name="javaMailSender" ref="sendMail"></property>
+	</bean>
+</beans>

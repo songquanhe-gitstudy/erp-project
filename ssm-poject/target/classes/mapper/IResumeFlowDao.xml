@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.IResumeFlowDao">
+  <resultMap id="BaseResultMap" type="com.song.model.ResumeFlowEntity">
+    <id column="flow_id" jdbcType="INTEGER" property="flowId" />
+    <result column="resume_id" jdbcType="INTEGER" property="resumeId" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="operator_now" jdbcType="VARCHAR" property="operatorNow" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flow_id, resume_id, state, content, create_time, operator_now
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resume_flow
+    where flow_id = #{flowId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByResumeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resume_flow
+    where resume_id = #{param1}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_resume_flow
+    where flow_id = #{flowId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.ResumeFlowEntity">
+    insert into t_resume_flow (flow_id, resume_id, state, 
+      content, create_time, operator_now
+      )
+    values (#{flowId,jdbcType=INTEGER}, #{resumeId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{operatorNow,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.ResumeFlowEntity">
+    insert into t_resume_flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowId != null">
+        flow_id,
+      </if>
+      <if test="resumeId != null">
+        resume_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="operatorNow != null">
+        operator_now,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowId != null">
+        #{flowId,jdbcType=INTEGER},
+      </if>
+      <if test="resumeId != null">
+        #{resumeId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorNow != null">
+        #{operatorNow,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.ResumeFlowEntity">
+    update t_resume_flow
+    <set>
+      <if test="resumeId != null">
+        resume_id = #{resumeId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorNow != null">
+        operator_now = #{operatorNow,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flow_id = #{flowId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.ResumeFlowEntity">
+    update t_resume_flow
+    set resume_id = #{resumeId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator_now = #{operatorNow,jdbcType=VARCHAR}
+    where flow_id = #{flowId,jdbcType=INTEGER}
+  </update>
+</mapper>

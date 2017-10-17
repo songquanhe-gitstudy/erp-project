@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.ITrainDao">
+  <resultMap id="BaseResultMap" type="com.song.model.TrainEntity">
+    <id column="train_id" jdbcType="INTEGER" property="trainId" />
+    <result column="dept_id" jdbcType="INTEGER" property="deptId" />
+    <result column="train_name" jdbcType="VARCHAR" property="trainName" />
+    <result column="train_time" jdbcType="DATE" property="trainTime" />
+    <result column="train_content" jdbcType="VARCHAR" property="trainContent" />
+    <result column="recall" jdbcType="VARCHAR" property="recall" />  
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+  </resultMap>
+  <resultMap id="BaseResultMapWithGrade" type="com.song.model.TrainEntity" extends="BaseResultMap">
+  	<association property="trainGradeEntity" javaType="com.song.model.TrainGradeEntity">
+	    <id column="grade_id" jdbcType="INTEGER" property="gradeId" />
+	    <result column="user_id" jdbcType="INTEGER" property="userId" />
+	    <result column="train_id" jdbcType="INTEGER" property="trainId" />
+	    <result column="grade" jdbcType="INTEGER" property="grade" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    train_id, dept_id, train_name, train_time, train_content, recall, uid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train
+    where train_id = #{trainId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByName" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train
+    where train_name like concat('%',#{name},'%')
+    order by train_id desc
+  </select>
+  
+  <select id="findByDeptId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train
+    where dept_id = #{param1,jdbcType=INTEGER}
+    order by train_id desc
+  </select>
+  
+  <select id="findWityGrade" resultMap="BaseResultMapWithGrade">
+    select 
+    *
+    from t_train t, t_train_grade tg
+    where t.dept_id = #{deptId}
+    and tg.user_id = #{userId}
+   	 and tg.train_id = #{trainId}
+   	 and tg.train_id  = t.train_id 
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_train
+  </select>
+  
+  <select id="findTrainBytime" resultMap="BaseResultMap">
+    select * 
+    from t_train
+     where to_days(train_time) = to_days(now())
+     and dept_id = #{param1}
+  </select>
+  
+  <select id="findByUid" resultMap="BaseResultMap">
+    select * 
+    from t_train
+     where uid = #{param1}
+     order by train_id desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_train
+    where train_id = #{trainId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.TrainEntity">
+    insert into t_train (train_id, dept_id, train_name, 
+      train_time, train_content, recall,uid
+      )
+    values (#{trainId,jdbcType=INTEGER}, #{deptId,jdbcType=INTEGER}, #{trainName,jdbcType=VARCHAR}, 
+      #{trainTime,jdbcType=DATE}, #{trainContent,jdbcType=VARCHAR}, #{recall,jdbcType=VARCHAR},
+      #{uid}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.TrainEntity">
+    insert into t_train
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="trainId != null">
+        train_id,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="trainName != null">
+        train_name,
+      </if>
+      <if test="trainTime != null">
+        train_time,
+      </if>
+      <if test="trainContent != null">
+        train_content,
+      </if>
+      <if test="recall != null">
+        recall,
+      </if>
+       <if test="uid != null">
+        uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="trainId != null">
+        #{trainId,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="trainName != null">
+        #{trainName,jdbcType=VARCHAR},
+      </if>
+      <if test="trainTime != null">
+        #{trainTime,jdbcType=DATE},
+      </if>
+      <if test="trainContent != null">
+        #{trainContent,jdbcType=VARCHAR},
+      </if>
+      <if test="recall != null">
+        #{recall,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.TrainEntity">
+    update t_train
+    <set>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="trainName != null">
+        train_name = #{trainName,jdbcType=VARCHAR},
+      </if>
+      <if test="trainTime != null">
+        train_time = #{trainTime,jdbcType=DATE},
+      </if>
+      <if test="trainContent != null">
+        train_content = #{trainContent,jdbcType=VARCHAR},
+      </if>
+      <if test="recall != null">
+        recall = #{recall,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where train_id = #{trainId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.TrainEntity">
+    update t_train
+    set dept_id = #{deptId,jdbcType=INTEGER},
+      train_name = #{trainName,jdbcType=VARCHAR},
+      train_time = #{trainTime,jdbcType=DATE},
+      train_content = #{trainContent,jdbcType=VARCHAR},
+      recall = #{recall,jdbcType=VARCHAR}
+      uid = #{uid}
+    where train_id = #{trainId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.dao.IResumeDao">
+  <resultMap id="BaseResultMap" type="com.song.model.ResumeEntity">
+    <id column="resume_id" jdbcType="INTEGER" property="resumeId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="toadmin_id" jdbcType="INTEGER" property="toadminId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="job_dept" jdbcType="VARCHAR" property="jobDept" />
+    <result column="job_positon" jdbcType="VARCHAR" property="jobPositon" />
+    <result column="pre_job" jdbcType="VARCHAR" property="preJob" />
+    <result column="except_salary" jdbcType="VARCHAR" property="exceptSalary" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="politics_status" jdbcType="VARCHAR" property="politicsStatus" />
+    <result column="job_exp" jdbcType="VARCHAR" property="jobExp" />
+    <result column="hobbies" jdbcType="VARCHAR" property="hobbies" />
+    <result column="mark" jdbcType="VARCHAR" property="mark" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="interviewDate" property="interviewDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    resume_id, user_id, toadmin_id, name, gender, age, phone_number, job_dept, job_positon, pre_job, 
+    except_salary, education, email, politics_status, job_exp, hobbies, mark, state, interviewDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resume
+    where resume_id = #{resumeId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resume
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resume
+    where resume_id = #{id}
+  </select>
+  
+  <select id="findResumeByAppId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resume
+    where toadmin_id = #{param1}
+    order by resume_id desc
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resume
+    order by resume_id desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_resume
+    where resume_id = #{resumeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.song.model.ResumeEntity">
+    insert into t_resume (resume_id, user_id, toadmin_id, 
+      name, gender, age, 
+      phone_number, job_dept, job_positon, pre_job, 
+      except_salary, education, email, 
+      politics_status, job_exp, hobbies, 
+      mark, state, interviewDate)
+    values (#{resumeId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{toadminId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
+      #{phoneNumber,jdbcType=VARCHAR}, #{jobDept,jdbcType=VARCHAR}, #{jobPositon,jdbcType=VARCHAR}, #{preJob,jdbcType=VARCHAR}, 
+      #{exceptSalary,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{politicsStatus,jdbcType=VARCHAR}, #{jobExp,jdbcType=VARCHAR}, #{hobbies,jdbcType=VARCHAR}, 
+      #{mark,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{interviewDate})
+  </insert>
+  <insert id="insertSelective" parameterType="com.song.model.ResumeEntity">
+    insert into t_resume
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resumeId != null">
+        resume_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="toadminId != null">
+        toadmin_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="phoneNumber != null">
+        phone_number,
+      </if>
+      <if test="jobDept != null">
+        job_dept,
+      </if>
+      <if test="jobPositon != null">
+        job_positon,
+      </if>
+      <if test="preJob != null">
+        pre_job,
+      </if>
+      <if test="exceptSalary != null">
+        except_salary,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="politicsStatus != null">
+        politics_status,
+      </if>
+      <if test="jobExp != null">
+        job_exp,
+      </if>
+      <if test="hobbies != null">
+        hobbies,
+      </if>
+      <if test="mark != null">
+        mark,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="interviewDate != null">
+      	interviewDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="resumeId != null">
+        #{resumeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="toadminId != null">
+        #{toadminId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="phoneNumber != null">
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="jobDept != null">
+        #{jobDept,jdbcType=VARCHAR},
+      </if>
+      <if test="jobPositon != null">
+        #{jobPositon,jdbcType=VARCHAR},
+      </if>
+      <if test="preJob != null">
+        #{preJob,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptSalary != null">
+        #{exceptSalary,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="politicsStatus != null">
+        #{politicsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jobExp != null">
+        #{jobExp,jdbcType=VARCHAR},
+      </if>
+      <if test="hobbies != null">
+        #{hobbies,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="interviewDate != null">
+        #{interviewDate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.song.model.ResumeEntity">
+    update t_resume
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="toadminId != null">
+        toadmin_id = #{toadminId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="phoneNumber != null">
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="jobDept != null">
+        job_dept = #{jobDept,jdbcType=VARCHAR},
+      </if>
+      <if test="jobPositon != null">
+        job_positon = #{jobPositon,jdbcType=VARCHAR},
+      </if>
+      <if test="preJob != null">
+        pre_job = #{preJob,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptSalary != null">
+        except_salary = #{exceptSalary,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="politicsStatus != null">
+        politics_status = #{politicsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jobExp != null">
+        job_exp = #{jobExp,jdbcType=VARCHAR},
+      </if>
+      <if test="hobbies != null">
+        hobbies = #{hobbies,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        mark = #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="interviewDate != null">
+        interviewDate = #{interviewDate},
+      </if>
+    </set>
+    where resume_id = #{resumeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.song.model.ResumeEntity">
+    update t_resume
+    set user_id = #{userId,jdbcType=INTEGER},
+      toadmin_id = #{toadminId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      job_dept = #{jobDept,jdbcType=VARCHAR},
+      job_positon = #{jobPositon,jdbcType=VARCHAR},
+      pre_job = #{preJob,jdbcType=VARCHAR},
+      except_salary = #{exceptSalary,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      politics_status = #{politicsStatus,jdbcType=VARCHAR},
+      job_exp = #{jobExp,jdbcType=VARCHAR},
+      hobbies = #{hobbies,jdbcType=VARCHAR},
+      mark = #{mark,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
+      interviewDate = #{interviewDate}
+    where resume_id = #{resumeId,jdbcType=INTEGER}
+  </update>
+</mapper>
